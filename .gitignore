@@ -10,8 +10,11 @@ CMakeFiles/
 
 # IDE
 .idea/
-.vscode/
 *.iml
+# .vscode는 공유 설정(tasks/launch)만 포함
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
 
 # macOS
 .DS_Store
