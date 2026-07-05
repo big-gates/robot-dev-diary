@@ -114,10 +114,10 @@ macOS에서 X11 포워딩(XQuartz)은 느려서 비추. 두 가지 경로:
 
 **B. noVNC 데스크톱 컨테이너 (RViz/Gazebo GUI가 꼭 필요할 때)**
 - `tiryoh/ros2-desktop-vnc:jazzy` 같은 커뮤니티 이미지를 쓰면 브라우저(localhost:6080)로 Ubuntu 데스크톱이 뜬다. arm64 지원 여부는 태그 확인.
-- Gazebo GUI를 본격적으로 쓰는 J장부터 유용하다.
+- Gazebo GUI를 본격적으로 쓰는 M장부터 유용하다.
 
 **C. 성능이 아쉬워지면 — UTM 가상머신**
-- Gazebo를 무겁게 돌리는 Part 3+에서 컨테이너가 답답하면 UTM(무료)에 Ubuntu 24.04 arm64를 깔고 그 안에서 전부 네이티브로 돌리는 게 낫다. virtio-gpu로 GL 가속도 어느 정도 받는다. RAM 32GB면 VM에 16GB 줘도 여유.
+- Gazebo를 무겁게 돌리는 Part 4+에서 컨테이너가 답답하면 UTM(무료)에 Ubuntu 24.04 arm64를 깔고 그 안에서 전부 네이티브로 돌리는 게 낫다. virtio-gpu로 GL 가속도 어느 정도 받는다. RAM 32GB면 VM에 16GB 줘도 여유.
 
 ## 4. CLion ↔ 컨테이너 연동
 
@@ -130,6 +130,6 @@ colcon 빌드가 만든 `compile_commands.json`으로 인덱싱한다:
 
 > 처음엔 이 연동이 가장 큰 삽질 포인트다. 그 삽질이 Chapter A의 일기 소재다 — 기록해두면 뒤따라오는 맥 유저들이 가장 고마워할 문서가 된다.
 
-## 5. 실물 로봇 단계(Chapter T)의 환경
+## 5. 실물 로봇 단계(Chapter U)의 환경
 
 실물은 어차피 SBC(Jetson Orin Nano / Raspberry Pi 5) 위 Ubuntu다. 그때는 맥에서 SSH 원격 개발(CLion Remote Development / VS Code Remote-SSH)로 전환하면 되고, 컨테이너에서 익힌 워크플로가 그대로 이식된다.
