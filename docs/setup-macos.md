@@ -25,16 +25,20 @@ IntelliJ IDEA는 C++을 지원하지 않는다(공식 C++ 플러그인 없음). 
   "build": { "dockerfile": "Dockerfile" },
   "workspaceMount": "source=${localWorkspaceFolder},target=/ws,type=bind",
   "workspaceFolder": "/ws",
+  "runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
   "customizations": {
     "vscode": {
       "extensions": [
         "llvm-vs-code-extensions.vscode-clangd",
-        "ms-vscode.cmake-tools"
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools"
       ]
     }
   }
 }
 ```
+
+> **`runArgs` 두 개는 컨테이너 안 C++ 디버깅의 필수 레시피다** (실측: 없으면 gdb가 브레이크포인트에서 멈춰도 VS Code UI가 "Running"으로 고정되는 증상). Docker 기본 seccomp 필터가 디버거의 시스템 콜(ptrace, ASLR 끄기용 personality)을 차단하기 때문. `--cap-add=SYS_PTRACE`는 프로세스 추적 권한, `seccomp=unconfined`는 시스템 콜 필터 해제. 개발용 컨테이너라 괜찮은 설정이고, 프로덕션 컨테이너엔 쓰지 않는다.
 
 같은 폴더의 `Dockerfile`은 아래 2절 참고 — **베이스 이미지는 `ros:jazzy`를 쓴다** (osrf 데스크톱 이미지는 amd64 전용이라 Apple Silicon에서 에뮬레이션으로 돈다).
 
