@@ -1,0 +1,23 @@
+# colcon / ROS 2
+build/
+install/
+log/
+
+# CMake (비-colcon 챕터용)
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# macOS
+.DS_Store
+
+# 컴파일 산출물
+*.o
+*.a
+*.so
+compile_commands.json
