@@ -24,7 +24,7 @@
 ## 진행 현황
 
 **Part 0 — 준비**
-- [ ] **A.** 개발 환경 구축 (Docker ROS 2 + CLion)
+- [x] **A.** 개발 환경 구축 (Docker ROS 2 + VS Code Dev Container) — 2026-07-05
 
 **Part 1 — Modern C++ 코어**
 - [ ] **B.** CMake를 맨손으로
