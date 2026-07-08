@@ -3,8 +3,10 @@ build/
 install/
 log/
 
-# CMake (비-colcon 챕터용)
+# CMake 빌드 폴더 — 이름 변형(bbuild, build-debug 등)도 전부 차단
+*build*/
 cmake-build-*/
+_deps/
 CMakeCache.txt
 CMakeFiles/
 
