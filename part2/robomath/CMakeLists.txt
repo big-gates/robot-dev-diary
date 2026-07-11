@@ -17,11 +17,18 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 # 라이브러리 타깃
-add_library(robomath angles.cpp)
+add_library(robomath angles.cpp vec2.cpp)
 
 # 실행 타깃: 테스트 프로그램
 add_executable(test_angles test_angles.cpp)
-
 # 연결: test_angles 는 robomath를 가져다 쓴다
 target_link_libraries(test_angles PRIVATE robomath GTest::gtest_main)
 add_test(NAME test_angles COMMAND test_angles)
+
+add_executable(test_vec2 test_vec2.cpp)
+target_link_libraries(test_vec2 PRIVATE robomath GTest::gtest_main)
+add_test(NAME test_vec2 COMMAND test_vec2)
+
+add_executable(drift experiments/drift.cpp)
+target_link_libraries(drift PRIVATE robomath)
+target_include_directories(drift PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
