@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <robomath/vec2.hpp>
 
 #include <cmath>
@@ -27,4 +28,20 @@ Vec2 project_forward(double x, double y, double theta, double dist) {
   return Vec2{x + dist * std::cos(theta), y + dist * std::sin(theta)};
 }
 
+Closest closest_on_segment(Vec2 p, Vec2 a, Vec2 b) {
+  Vec2 ab = b - a;
+  Vec2 ap = p - a;
+
+  double t = ap.dot(ab) / ab.dot(ab);
+
+  t = std::clamp(t, 0.0, 1.0);
+
+  Vec2 closest = a + ab * t;
+  double dist = (p - closest).norm();
+
+  return Closest{
+    closest,
+    dist,
+  };
+}
 } // namespace robomath

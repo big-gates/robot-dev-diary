@@ -1,3 +1,4 @@
+#include <cmath>
 #include <robomath/angles.hpp>
 #include <robomath/vec2.hpp>
 #include <gtest/gtest.h>
@@ -50,4 +51,21 @@ TEST(Vec2, Normalized) {
     Vec2 zero = (Vec2{0.0, 0.0}).normalized();
     EXPECT_NEAR(zero.x, 0.0, 1e-9);
     EXPECT_NEAR(zero.y, 0.0, 1e-9);
+}
+
+TEST(Vec2, ClosestOnSegment) {
+  Vec2 a{0.0, 0.0}, b{2.0, 0.0};
+
+  Closest c1 = closest_on_segment(Vec2{1.0, 1.0}, a, b);
+  EXPECT_NEAR(c1.point.x, 1.0, 1e-9);
+  EXPECT_NEAR(c1.point.y, 0.0, 1e-9);
+  EXPECT_NEAR(c1.dist, 1.0, 1e-9);
+
+  Closest c2 = closest_on_segment(Vec2{3.0, 1.0}, a, b);
+  EXPECT_NEAR(c2.point.x, 2.0, 1e-9);
+  EXPECT_NEAR(c2.dist, std::sqrt(2.0) , 1e-9);
+
+  Closest c3 = closest_on_segment(Vec2{-1.0, 0.0}, a, b);
+  EXPECT_NEAR(c3.point.x, 0.0, 1e-9);
+  EXPECT_NEAR(c3.dist, 1.0, 1e-9);
 }

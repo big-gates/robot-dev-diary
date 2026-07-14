@@ -9,7 +9,7 @@ struct Vec2 {
 
   Vec2 operator+(const Vec2 &o) const;
   Vec2 operator-(const Vec2 &o) const; // b - a = "a에서 b로 가는 화살표"
-  Vec2 operator*(double s) const;      // 스칼라 곱 (방향 유지, 길이만 조절)
+  Vec2 operator*(double s) const; // 스칼라 곱 (방향 유지, 길이만 조절)
 
   // 내적: >0 같은 방향 / =0 수직 / <0 반대 방향
   double dot(const Vec2 &o) const;
@@ -23,5 +23,12 @@ struct Vec2 {
 
 // 현재 위치에서 theta 방향으로 dist 만큼 전진한 좌표
 Vec2 project_forward(double x, double y, double theta, double dist);
+
+struct Closest {
+  Vec2 point; // 선분 위에서 가장 가까운 점
+  double dist; // 그 점 까지의 거리 = 크로스 트랙 에러
+};
+
+Closest closest_on_segment(Vec2 p, Vec2 a, Vec2 b); // 선분 ab에 대해
 
 } // namespace robomath
