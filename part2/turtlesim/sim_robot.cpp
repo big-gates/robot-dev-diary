@@ -1,5 +1,7 @@
 #include "sim_robot.hpp"
-#include "angles.hpp"
+#include <robomath/angles.hpp>
+
+using namespace robomath;
 #include <cmath>
 
 void SimRobot::set_wheel_speeds(double left, double right) {

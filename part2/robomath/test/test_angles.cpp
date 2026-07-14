@@ -1,6 +1,9 @@
-#include "angles.hpp"
+#include <robomath/angles.hpp>
+
 #include <gtest/gtest.h>
 #include <vector>
+
+using namespace robomath;
 
 TEST(Angles, Deg2Rad) {
   EXPECT_NEAR(deg2rad(180.0), kPi, 1e-9);

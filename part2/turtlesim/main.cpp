@@ -1,6 +1,8 @@
 #include "renderer.hpp"
 
-#include "angles.hpp"
+#include <robomath/angles.hpp>
+
+using namespace robomath;
 #include "sim_robot.hpp"
 #include <algorithm>
 #include <chrono>

@@ -1,10 +1,12 @@
 #include "renderer.hpp"
 
-#include "angles.hpp"
+#include <robomath/angles.hpp>
 
 #include <cmath>
 #include <cstdio>
 #include <vector>
+
+using namespace robomath;
 
 namespace {
 

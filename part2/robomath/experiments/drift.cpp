@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
-#include "angles.hpp"
+#include <robomath/angles.hpp>
+
+using namespace robomath;
 
 int main() {
     const double bias = 0.001; // 자이로 바이어스: 초당 0.001 rad 거짓말

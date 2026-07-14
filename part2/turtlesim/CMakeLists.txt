@@ -1,18 +1,19 @@
-cmake_minimum_required(VERSION 3.16) # 이 버전 이상의 CMake로 열어라
-project(my_turtlesim CXX) # 프로젝트 이름 + 언어(CXX=c++)
+cmake_minimum_required(VERSION 3.16)
+project(my_turtlesim CXX)
 
-set(CMAKE_CXX_STANDARD 17) # g++의 -std=c++17에 해당
-set(CMAKE_CXX_STANDARD_REQUIRED ON) # 17 못 쓰면 에러 (조용히 낮추지 않도록 하는것)
-add_compile_options(-Wall -Wextra) # 이제 경고도 켠다 (모든 타깃에 적용)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_compile_options(-Wall -Wextra)
 
-# robomath 소스를 직접 컴파일에 포함 (아직 설치형 라이브러리가 아니므로)
+# 이웃 프로젝트인 robomath를 하위 빌드로 포함
+# → robomath 타깃과 그 PUBLIC include 경로를 그대로 물려받는다
+add_subdirectory(../robomath robomath_build)
+
 add_executable(turtle
   main.cpp
   renderer.cpp
   sim_robot.cpp
-  ../robomath/angles.cpp
-  ../robomath/vec2.cpp
 )
 
-# "angles.hpp"를 ../robomath 에서 찾도록
-target_include_directories(turtle PRIVATE ../robomath)
+# robomath만 링크하면 #include <robomath/angles.hpp> 가 자동으로 열린다
+target_link_libraries(turtle PRIVATE robomath)
