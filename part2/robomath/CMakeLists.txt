@@ -22,6 +22,7 @@ add_library(robomath
   src/vec2.cpp
   src/mat2.cpp   
   src/mat3.cpp
+  src/line.cpp
 )
 
 # PUBLIC = 나를 링크하는 타깃(테스트, turtlesim)도 이 헤더 경로를 물려받는다
@@ -46,6 +47,11 @@ add_executable(test_mat3 test/test_mat3.cpp)
 target_link_libraries(test_mat3 PRIVATE robomath GTest::gtest_main)
 add_test(NAME test_mat3 COMMAND test_mat3)
 
+add_executable(test_line test/test_line.cpp)
+target_link_libraries(test_line PRIVATE robomath GTest::gtest_main)
+add_test(NAME test_line COMMAND test_line)
+
 # ── 실험 (채점이 아니라 관찰이 목적 — add_test 없음) ──
 add_executable(drift experiments/drift.cpp)
 target_link_libraries(drift PRIVATE robomath)
+
