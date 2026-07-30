@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 project(robomath CXX)
 
+# 디버깅 기본값: 빌드 타입 미지정 시 Debug(-g) — VS Code 중단점이 바로 잡히게
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif()
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Wextra)
@@ -20,9 +25,10 @@ enable_testing()
 add_library(robomath
   src/angles.cpp
   src/vec2.cpp
-  src/mat2.cpp   
+  src/mat2.cpp
   src/mat3.cpp
   src/line.cpp
+  src/pose2d.cpp
 )
 
 # PUBLIC = 나를 링크하는 타깃(테스트, turtlesim)도 이 헤더 경로를 물려받는다
@@ -50,6 +56,10 @@ add_test(NAME test_mat3 COMMAND test_mat3)
 add_executable(test_line test/test_line.cpp)
 target_link_libraries(test_line PRIVATE robomath GTest::gtest_main)
 add_test(NAME test_line COMMAND test_line)
+
+add_executable(test_pose2d test/test_pose2d.cpp)
+target_link_libraries(test_pose2d PRIVATE robomath GTest::gtest_main)
+add_test(NAME test_pose2d COMMAND test_pose2d)
 
 # ── 실험 (채점이 아니라 관찰이 목적 — add_test 없음) ──
 add_executable(drift experiments/drift.cpp)
