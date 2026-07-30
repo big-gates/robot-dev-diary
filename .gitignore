@@ -26,3 +26,6 @@ CMakeFiles/
 *.a
 *.so
 compile_commands.json
+
+# 생성된 시각화 (필요하면 저널용으로 특정 파일만 git add -f)
+*.svg

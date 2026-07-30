@@ -17,3 +17,10 @@ add_executable(turtle
 
 # robomath만 링크하면 #include <robomath/angles.hpp> 가 자동으로 열린다
 target_link_libraries(turtle PRIVATE robomath)
+
+# v1: LiDAR 인지 파이프라인 → SVG 시각화
+add_executable(lidar_demo
+  lidar_demo.cpp
+  svg_canvas.cpp
+)
+target_link_libraries(lidar_demo PRIVATE robomath)
