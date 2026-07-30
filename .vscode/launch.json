@@ -2,6 +2,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "debug cmake test (현재 test 파일, lldb)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/part2/robomath/build/${fileBasenameNoExtension}",
+            "cwd": "${workspaceFolder}/part2/robomath",
+            "preLaunchTask": "cmake-build-current-test"
+        },
+        {
             "name": "debug current file (lldb)",
             "type": "lldb",
             "request": "launch",
