@@ -7,4 +7,6 @@ struct Pose2D {
   Pose2D operator*(const Pose2D &) const;
 };
 
+Vec2 inverse_transform(const Pose2D &robot, Vec2 map_point);
+Pose2D inverse(const Pose2D &);
 }; // namespace robomath
