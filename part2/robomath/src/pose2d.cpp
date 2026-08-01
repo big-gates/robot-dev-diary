@@ -31,4 +31,10 @@ Pose2D inverse(const Pose2D &p) {
 Vec2 sensor_to_map(const Pose2D &robot, const Pose2D &mount, Vec2 sensed) {
   return (robot * mount).transform(sensed);
 }
+
+Pose2D approach_pose(const Pose2D &target, double standoff) {
+    Vec2 t = target.transform({standoff, 0});
+    double heading = wrap_to_pi(target.theta + kPi);
+    return Pose2D {t.x, t.y, heading};
+}
 } // namespace robomath

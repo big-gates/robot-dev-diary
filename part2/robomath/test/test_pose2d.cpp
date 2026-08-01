@@ -36,8 +36,8 @@ TEST(Pose2D, Identity) {
   EXPECT_NEAR(result.theta, deg2rad(90.0), 1e-9);
 }
 
-// 3-2 inverse_transform: 지도 좌표의 점을 로봇 로컬 좌표로 (transform의 역방향).
-// 로봇 (1,1,90°), 지도점 (1,2)는 로봇 정면 1m 북쪽 → 로봇 기준 (1,0).
+// 3-2 inverse_transform: 지도 좌표의 점을 로봇 로컬 좌표로 (transform의
+// 역방향). 로봇 (1,1,90°), 지도점 (1,2)는 로봇 정면 1m 북쪽 → 로봇 기준 (1,0).
 TEST(Pose2D, InverseTransform) {
   Pose2D robot = Pose2D{1, 1, deg2rad(90.0)};
   Vec2 map_point = Vec2{1, 2};
@@ -73,11 +73,29 @@ TEST(Pose2D, LeftRight) {
 // 로봇 (0,0,90°)에 mount(정면 0.15m) 달린 센서가 잰 점 (1,0)sensor.
 // robot*mount 합성 후 sensed 변환 → 지도 (0, 1.15).
 TEST(Pose2D, SensorToMap) {
-    Pose2D robot = Pose2D {0, 0, deg2rad(90.0)};
-    Pose2D mount = Pose2D { 0.15, 0, 0};
-    Vec2 sensed = Vec2 {1, 0};
-    Vec2 result = sensor_to_map(robot, mount, sensed);
+  Pose2D robot = Pose2D{0, 0, deg2rad(90.0)};
+  Pose2D mount = Pose2D{0.15, 0, 0};
+  Vec2 sensed = Vec2{1, 0};
+  Vec2 result = sensor_to_map(robot, mount, sensed);
 
-    EXPECT_NEAR(result.x, 0.0, 1e-9);
-    EXPECT_NEAR(result.y, 1.15, 1e-9);
+  EXPECT_NEAR(result.x, 0.0, 1e-9);
+  EXPECT_NEAR(result.y, 1.15, 1e-9);
+}
+
+TEST(Pose2D, ApproachPose) {
+  // 테이블 (5,5,180°) 정면 0.3m → 로봇은 (4.7,5)에서 0° 보고 정지
+  Pose2D table = Pose2D{5, 5, deg2rad(180.0)};
+  Pose2D result = approach_pose(table, 0.3);
+  EXPECT_NEAR(result.x, 4.7, 1e-9);
+  EXPECT_NEAR(result.y, 5.0, 1e-9);
+  EXPECT_NEAR(result.theta, 0.0, 1e-9);
+}
+
+TEST(Pose2D, ApproachPoseFacingUp) {
+  // 테이블 (0,0,90°) 정면 0.5m → 로봇은 (0,0.5)에서 -90° 보고 정지
+  Pose2D table = Pose2D{0, 0, deg2rad(90.0)};
+  Pose2D result = approach_pose(table, 0.5);
+  EXPECT_NEAR(result.x, 0.0, 1e-9);
+  EXPECT_NEAR(result.y, 0.5, 1e-9);
+  EXPECT_NEAR(result.theta, deg2rad(-90.0), 1e-9);
 }
