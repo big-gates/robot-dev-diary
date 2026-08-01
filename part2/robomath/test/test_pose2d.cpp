@@ -68,3 +68,16 @@ TEST(Pose2D, LeftRight) {
   Vec2 right = inverse_transform(robot, {1, -1});
   EXPECT_LT(right.y, 0.0);
 }
+
+// 3-3 sensor_to_map: 센서→로봇→지도 2단 변환 체인 (= TF2가 하는 일).
+// 로봇 (0,0,90°)에 mount(정면 0.15m) 달린 센서가 잰 점 (1,0)sensor.
+// robot*mount 합성 후 sensed 변환 → 지도 (0, 1.15).
+TEST(Pose2D, SensorToMap) {
+    Pose2D robot = Pose2D {0, 0, deg2rad(90.0)};
+    Pose2D mount = Pose2D { 0.15, 0, 0};
+    Vec2 sensed = Vec2 {1, 0};
+    Vec2 result = sensor_to_map(robot, mount, sensed);
+
+    EXPECT_NEAR(result.x, 0.0, 1e-9);
+    EXPECT_NEAR(result.y, 1.15, 1e-9);
+}

@@ -8,5 +8,8 @@ struct Pose2D {
 };
 
 Vec2 inverse_transform(const Pose2D &robot, Vec2 map_point);
+
 Pose2D inverse(const Pose2D &);
-}; // namespace robomath
+
+Vec2 sensor_to_map(const Pose2D &robot, const Pose2D &mount, Vec2 sensed);
+} // namespace robomath

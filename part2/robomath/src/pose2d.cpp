@@ -23,8 +23,12 @@ Vec2 inverse_transform(const Pose2D &robot, Vec2 map_point) {
 }
 
 Pose2D inverse(const Pose2D &p) {
-    Vec2 v = inverse_transform(p, {0, 0});
-    double th = wrap_to_pi(-p.theta);
-    return Pose2D{v.x, v.y, th};
+  Vec2 v = inverse_transform(p, {0, 0});
+  double th = wrap_to_pi(-p.theta);
+  return Pose2D{v.x, v.y, th};
+}
+
+Vec2 sensor_to_map(const Pose2D &robot, const Pose2D &mount, Vec2 sensed) {
+  return (robot * mount).transform(sensed);
 }
 } // namespace robomath
