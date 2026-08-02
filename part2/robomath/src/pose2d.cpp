@@ -33,8 +33,15 @@ Vec2 sensor_to_map(const Pose2D &robot, const Pose2D &mount, Vec2 sensed) {
 }
 
 Pose2D approach_pose(const Pose2D &target, double standoff) {
-    Vec2 t = target.transform({standoff, 0});
-    double heading = wrap_to_pi(target.theta + kPi);
-    return Pose2D {t.x, t.y, heading};
+  Vec2 t = target.transform({standoff, 0});
+  double heading = wrap_to_pi(target.theta + kPi);
+  return Pose2D{t.x, t.y, heading};
+}
+
+Pose2D integrate_odom(const Pose2D &p, double dl, double dr, double track) {
+  double d = (dl + dr) / 2.0;
+  double dTh = (dr - dl) / track;
+  return Pose2D{p.x + d * std::cos(p.theta), p.y + d * std::sin(p.theta),
+                wrap_to_pi(p.theta + dTh)};
 }
 } // namespace robomath

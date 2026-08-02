@@ -99,3 +99,39 @@ TEST(Pose2D, ApproachPoseFacingUp) {
   EXPECT_NEAR(result.y, 0.5, 1e-9);
   EXPECT_NEAR(result.theta, deg2rad(-90.0), 1e-9);
 }
+
+// 직진: dl=dr=0.1 → θ 불변, 헤딩 방향 0.1 전진
+TEST(Pose2D, OdomStraight) {
+  Pose2D robot = Pose2D{0, 0, 0};
+  double dl = 0.1;
+  double dr = 0.1;
+  double track = 0.4;
+  Pose2D result = integrate_odom(robot, dl, dr, track);
+  EXPECT_NEAR(result.x, 0.1, 1e-9);
+  EXPECT_NEAR(result.y, 0.0, 1e-9);
+  EXPECT_NEAR(result.theta, 0.0, 1e-9);
+}
+
+// 제자리 회전: dl=-0.1, dr=0.1 → 위치 불변, θ만 +0.5
+TEST(Pose2D, OdomSpinInPlace) {
+  Pose2D robot = Pose2D{0, 0, 0};
+  double dl = -0.1;
+  double dr = 0.1;
+  double track = 0.4;
+  Pose2D result = integrate_odom(robot, dl, dr, track);
+  EXPECT_NEAR(result.x, 0.0, 1e-9);
+  EXPECT_NEAR(result.y, 0.0, 1e-9);
+  EXPECT_NEAR(result.theta, 0.5, 1e-9);
+}
+
+// 완만한 커브: dl=0.09, dr=0.11 → 전진 0.1 + 회전 0.05
+TEST(Pose2D, OdomCurve) {
+  Pose2D robot = Pose2D{0, 0, 0};
+  double dl = 0.09;
+  double dr = 0.11;
+  double track = 0.4;
+  Pose2D result = integrate_odom(robot, dl, dr, track);
+  EXPECT_NEAR(result.x, 0.1, 1e-9);
+  EXPECT_NEAR(result.y, 0.0, 1e-9);
+  EXPECT_NEAR(result.theta, 0.05, 1e-9);
+}
