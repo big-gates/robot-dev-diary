@@ -24,3 +24,9 @@ add_executable(lidar_demo
   svg_canvas.cpp
 )
 target_link_libraries(lidar_demo PRIVATE robomath)
+
+add_executable(odom_demo
+  odom_demo.cpp
+  svg_canvas.cpp
+)
+target_link_libraries(odom_demo PRIVATE robomath)
