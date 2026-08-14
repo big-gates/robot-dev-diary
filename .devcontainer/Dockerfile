@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       ros-jazzy-desktop \
       gdb \
       clangd \
+      clang-format \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo 'source /opt/ros/jazzy/setup.bash' >> /root/.bashrc

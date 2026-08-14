@@ -11,7 +11,15 @@
         "ms-vscode.cmake-tools",
         "ms-vscode.cpptools",
         "vadimcn.vscode-lldb"
-      ]
+      ],
+      "settings": {
+        "clangd.arguments": ["--header-insertion=never"],
+        "C_Cpp.intelliSenseEngine": "disabled",
+        "[cpp]": {
+          "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+          "editor.formatOnSave": true
+        }
+      }
     }
   }
 }
