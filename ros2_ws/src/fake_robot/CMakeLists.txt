@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(fake_robot CXX)
+project(fake_robot C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -8,15 +8,22 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(rclcpp_action REQUIRED)
 
 add_subdirectory(
   ${CMAKE_CURRENT_SOURCE_DIR}/../../../part2/robomath
   ${CMAKE_CURRENT_BINARY_DIR}/robomath_build
 )
 
+rosidl_generate_interfaces(${PROJECT_NAME} "action/MoveToPoint.action")
+ament_export_dependencies(rosidl_default_runtime)
+
 add_executable(fake_robot_node src/fake_robot_node.cpp)
-ament_target_dependencies(fake_robot_node rclcpp geometry_msgs nav_msgs)
-target_link_libraries(fake_robot_node robomath)
+ament_target_dependencies(fake_robot_node rclcpp geometry_msgs nav_msgs std_srvs rclcpp_action)
+rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(fake_robot_node robomath "${cpp_typesupport_target}")
 
 install(TARGETS fake_robot_node DESTINATION lib/${PROJECT_NAME})
 
