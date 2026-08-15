@@ -11,6 +11,7 @@ find_package(nav_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rclcpp_action REQUIRED)
+find_package(rclcpp_lifecycle REQUIRED)
 
 add_subdirectory(
   ${CMAKE_CURRENT_SOURCE_DIR}/../../../part2/robomath
@@ -21,7 +22,7 @@ rosidl_generate_interfaces(${PROJECT_NAME} "action/MoveToPoint.action")
 ament_export_dependencies(rosidl_default_runtime)
 
 add_executable(fake_robot_node src/fake_robot_node.cpp)
-ament_target_dependencies(fake_robot_node rclcpp geometry_msgs nav_msgs std_srvs rclcpp_action)
+ament_target_dependencies(fake_robot_node rclcpp geometry_msgs nav_msgs std_srvs rclcpp_action rclcpp_lifecycle)
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
 target_link_libraries(fake_robot_node robomath "${cpp_typesupport_target}")
 
