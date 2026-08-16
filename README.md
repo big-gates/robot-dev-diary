@@ -41,7 +41,7 @@
 **Part 3 — ROS 2 기초**
 - [x] **I.** 노드·토픽·QoS — 2026-08-10
 - [x] **J.** 서비스·액션·라이프사이클 — 2026-08-15
-- [ ] **K.** TF2 — 내 라이브러리를 은퇴시키기
+- [x] **K.** TF2 — 내 라이브러리를 은퇴시키기 — 2026-08-16
 - [ ] **L.** URDF로 로봇 정의하기
 - [ ] **M.** Gazebo 시뮬레이션
 
@@ -146,6 +146,7 @@ rclcpp로 퍼블리셔/서브스크라이버를 작성하고, QoS(reliability, d
 좌표 프레임 트리(map → odom → base_link → laser), 시간 보간, `tf2_ros` broadcaster/listener.
 - 만들 것: Part 2에서 완성한 `libpose2d` 사용처를 TF2로 전면 교체 (문제 3-3 센서 캘리브레이션이 static transform 한 줄이 되는 순간)
 - 완료 기준: "왜 map→odom이 별도 프레임인가"(위치추정 보정의 자리)를 그림으로 설명
+- 학습 노트: [TF2 프레임 트리 — 왜 map→odom이 따로 있는가](docs/notes/chapter-k-tf-tree.md) — 3단 트리의 근거, 조회 실패 원칙, TF 디버깅 도구
 
 ### L. URDF로 로봇 정의하기 (1주)
 차동구동 로봇의 링크·조인트·관성·센서 마운트를 URDF(xacro)로 기술, `robot_state_publisher` + RViz/Foxglove로 확인.

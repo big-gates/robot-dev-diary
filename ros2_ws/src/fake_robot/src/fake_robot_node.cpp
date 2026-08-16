@@ -5,6 +5,7 @@
 #include <mutex>
 
 #include <fake_robot/action/move_to_point.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <rclcpp/callback_group.hpp>
@@ -21,6 +22,11 @@
 #include <robomath/pose2d.hpp>
 #include <robomath/vec2.hpp>
 #include <std_srvs/srv/trigger.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2_ros/buffer.hpp>
+#include <tf2_ros/static_transform_broadcaster.hpp>
+#include <tf2_ros/transform_broadcaster.hpp>
+#include <tf2_ros/transform_listener.hpp>
 
 class FakeRobotNode : public rclcpp_lifecycle::LifecycleNode {
 public:
@@ -37,6 +43,20 @@ public:
   CallbackReturn on_configure(const rclcpp_lifecycle::State &previous_state) override {
     RCLCPP_INFO_STREAM(get_logger(),
                        "[lifecycle] on configure previous_state: " << previous_state.label());
+
+    transform_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(this);
+    static_transform_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+    buffer_ = std::make_shared<tf2_ros::Buffer>(get_clock());
+    transform_listener_ = std::make_shared<tf2_ros::TransformListener>(*buffer_, this);
+
+    geometry_msgs::msg::TransformStamped transform_stamped;
+    transform_stamped.header.stamp = now();
+    transform_stamped.header.frame_id = "base_link";
+    transform_stamped.child_frame_id = "laser";
+    transform_stamped.transform.translation.x = laser_offset_x_;
+    transform_stamped.transform.translation.y = 0.0;
+    transform_stamped.transform.translation.z = laser_offset_z_;
+    static_transform_broadcaster_->sendTransform(transform_stamped);
 
     rclcpp::QoS odom_qos{rclcpp::KeepLast{5}};
     odom_qos.best_effort();
@@ -154,6 +174,10 @@ public:
     reset_pose_service_.reset();
     move_to_point_server_.reset();
     cmd_vel_sub_.reset();
+    transform_broadcaster_.reset();
+    static_transform_broadcaster_.reset();
+    transform_listener_.reset();
+    buffer_.reset();
     return CallbackReturn::SUCCESS;
   }
 
@@ -171,9 +195,11 @@ private:
   double track_{0.4};
   double k_ang_{1.0};
   double k_lin_{0.5};
-  double max_angular_{1.0}; // rad/s
-  double max_linear_{0.5}; // m/s
-  double goal_tolerance_{0.05}; // m
+  double laser_offset_x_{0.2};    // m
+  double laser_offset_z_{0.1};    // m
+  double max_angular_{1.0};       // rad/s
+  double max_linear_{0.5};        // m/s
+  double goal_tolerance_{0.05};   // m
   double heading_tolerance_{0.3}; // rad (≈ 17°)
 
   rclcpp::TimerBase::SharedPtr timer_;
@@ -186,6 +212,11 @@ private:
   rclcpp_action::Server<MoveToPoint>::SharedPtr move_to_point_server_;
   std::shared_ptr<GoalHandle> goal_handle_;
   const std::chrono::milliseconds timer_period_ = std::chrono::milliseconds(500);
+
+  std::shared_ptr<tf2_ros::TransformBroadcaster> transform_broadcaster_;
+  std::shared_ptr<tf2_ros::StaticTransformBroadcaster> static_transform_broadcaster_;
+  std::shared_ptr<tf2_ros::Buffer> buffer_;
+  std::shared_ptr<tf2_ros::TransformListener> transform_listener_;
 
   void on_timer() {
     double linear_x;
@@ -290,6 +321,32 @@ private:
     odom.twist.twist.angular.z = angular_z;
 
     odom_pub_->publish(odom);
+
+    geometry_msgs::msg::TransformStamped transform_stamped;
+    transform_stamped.header.stamp = current_time;
+    transform_stamped.header.frame_id = "odom";
+    transform_stamped.child_frame_id = "base_link";
+    transform_stamped.transform.translation.x = pose_.x;
+    transform_stamped.transform.translation.y = pose_.y;
+    transform_stamped.transform.translation.z = 0.0;
+    transform_stamped.transform.rotation = odom.pose.pose.orientation;
+    transform_broadcaster_->sendTransform(transform_stamped);
+
+    geometry_msgs::msg::PointStamped laser_point_stamped;
+    laser_point_stamped.header.frame_id = "laser";
+    laser_point_stamped.point.x = 1.0;
+    try {
+      geometry_msgs::msg::PointStamped odom_point_stamped =
+          buffer_->transform(laser_point_stamped, "odom");
+      RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 2000,
+                           "[tf] laser(%.2f, %.2f, %.2f) -> odom(%.2f, %.2f, %.2f)",
+                           laser_point_stamped.point.x, laser_point_stamped.point.y,
+                           laser_point_stamped.point.z, odom_point_stamped.point.x,
+                           odom_point_stamped.point.y, odom_point_stamped.point.z);
+    } catch (const tf2::TransformException &ex) {
+      RCLCPP_WARN_THROTTLE(get_logger(), *get_clock(), 2000, "[tf] laser -> odom 변환 실패: %s",
+                           ex.what());
+    }
   }
 };
 
