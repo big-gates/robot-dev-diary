@@ -5,6 +5,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       gdb \
       clangd \
       clang-format \
+      ros-jazzy-xacro \
+      ros-jazzy-joint-state-publisher \
+      ros-jazzy-foxglove-bridge \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo 'source /opt/ros/jazzy/setup.bash' >> /root/.bashrc

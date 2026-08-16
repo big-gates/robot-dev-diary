@@ -10,13 +10,23 @@
         "llvm-vs-code-extensions.vscode-clangd",
         "ms-vscode.cmake-tools",
         "ms-vscode.cpptools",
-        "vadimcn.vscode-lldb"
+        "vadimcn.vscode-lldb",
+        "redhat.vscode-xml",
+        "ms-iot.vscode-ros"
       ],
       "settings": {
         "clangd.arguments": ["--header-insertion=never"],
         "C_Cpp.intelliSenseEngine": "disabled",
         "[cpp]": {
           "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+          "editor.formatOnSave": true
+        },
+        "files.associations": {
+          "*.xacro": "xml",
+          "*.urdf": "xml"
+        },
+        "[xml]": {
+          "editor.defaultFormatter": "redhat.vscode-xml",
           "editor.formatOnSave": true
         }
       }
