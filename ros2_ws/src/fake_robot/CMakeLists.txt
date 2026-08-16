@@ -29,5 +29,6 @@ rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typ
 target_link_libraries(fake_robot_node robomath "${cpp_typesupport_target}")
 
 install(TARGETS fake_robot_node DESTINATION lib/${PROJECT_NAME})
+install(DIRECTORY urdf DESTINATION share/${PROJECT_NAME})
 
 ament_package()

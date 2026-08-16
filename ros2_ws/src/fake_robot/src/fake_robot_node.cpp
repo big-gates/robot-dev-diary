@@ -24,7 +24,6 @@
 #include <std_srvs/srv/trigger.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <tf2_ros/buffer.hpp>
-#include <tf2_ros/static_transform_broadcaster.hpp>
 #include <tf2_ros/transform_broadcaster.hpp>
 #include <tf2_ros/transform_listener.hpp>
 
@@ -45,18 +44,8 @@ public:
                        "[lifecycle] on configure previous_state: " << previous_state.label());
 
     transform_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(this);
-    static_transform_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
     buffer_ = std::make_shared<tf2_ros::Buffer>(get_clock());
     transform_listener_ = std::make_shared<tf2_ros::TransformListener>(*buffer_, this);
-
-    geometry_msgs::msg::TransformStamped transform_stamped;
-    transform_stamped.header.stamp = now();
-    transform_stamped.header.frame_id = "base_link";
-    transform_stamped.child_frame_id = "laser";
-    transform_stamped.transform.translation.x = laser_offset_x_;
-    transform_stamped.transform.translation.y = 0.0;
-    transform_stamped.transform.translation.z = laser_offset_z_;
-    static_transform_broadcaster_->sendTransform(transform_stamped);
 
     rclcpp::QoS odom_qos{rclcpp::KeepLast{5}};
     odom_qos.best_effort();
@@ -175,7 +164,6 @@ public:
     move_to_point_server_.reset();
     cmd_vel_sub_.reset();
     transform_broadcaster_.reset();
-    static_transform_broadcaster_.reset();
     transform_listener_.reset();
     buffer_.reset();
     return CallbackReturn::SUCCESS;
@@ -195,8 +183,6 @@ private:
   double track_{0.4};
   double k_ang_{1.0};
   double k_lin_{0.5};
-  double laser_offset_x_{0.2};    // m
-  double laser_offset_z_{0.1};    // m
   double max_angular_{1.0};       // rad/s
   double max_linear_{0.5};        // m/s
   double goal_tolerance_{0.05};   // m
@@ -214,7 +200,6 @@ private:
   const std::chrono::milliseconds timer_period_ = std::chrono::milliseconds(500);
 
   std::shared_ptr<tf2_ros::TransformBroadcaster> transform_broadcaster_;
-  std::shared_ptr<tf2_ros::StaticTransformBroadcaster> static_transform_broadcaster_;
   std::shared_ptr<tf2_ros::Buffer> buffer_;
   std::shared_ptr<tf2_ros::TransformListener> transform_listener_;
 
