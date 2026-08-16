@@ -17,6 +17,8 @@ CMakeFiles/
 .vscode/*
 !.vscode/tasks.json
 !.vscode/launch.json
+# 에이전트 로컬 설정
+.claude/
 
 # macOS
 .DS_Store
@@ -29,3 +31,6 @@ compile_commands.json
 
 # 생성된 시각화 (필요하면 저널용으로 특정 파일만 git add -f)
 *.svg
+# tf2_tools view_frames 산출물
+frames_*.pdf
+frames_*.gv
