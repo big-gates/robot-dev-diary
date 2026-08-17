@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       ros-jazzy-xacro \
       ros-jazzy-joint-state-publisher \
       ros-jazzy-foxglove-bridge \
+      ros-jazzy-ros-gz \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo 'source /opt/ros/jazzy/setup.bash' >> /root/.bashrc
