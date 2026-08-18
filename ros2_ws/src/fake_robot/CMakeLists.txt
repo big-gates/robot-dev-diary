@@ -35,6 +35,6 @@ ament_target_dependencies(teleop_node rclcpp geometry_msgs)
 
 install(TARGETS fake_robot_node DESTINATION lib/${PROJECT_NAME})
 install(TARGETS teleop_node DESTINATION lib/${PROJECT_NAME})
-install(DIRECTORY urdf worlds DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY urdf worlds launch config DESTINATION share/${PROJECT_NAME})
 
 ament_package()
