@@ -15,6 +15,8 @@ find_package(rclcpp_lifecycle REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
+add_compile_options(-Wall -Wextra -Wpedantic)
+
 add_subdirectory(
   ${CMAKE_CURRENT_SOURCE_DIR}/../../../part2/robomath
   ${CMAKE_CURRENT_BINARY_DIR}/robomath_build
@@ -28,7 +30,11 @@ ament_target_dependencies(fake_robot_node rclcpp geometry_msgs nav_msgs std_srvs
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
 target_link_libraries(fake_robot_node robomath "${cpp_typesupport_target}")
 
+add_executable(teleop_node src/teleop_node.cpp)
+ament_target_dependencies(teleop_node rclcpp geometry_msgs)
+
 install(TARGETS fake_robot_node DESTINATION lib/${PROJECT_NAME})
-install(DIRECTORY urdf DESTINATION share/${PROJECT_NAME})
+install(TARGETS teleop_node DESTINATION lib/${PROJECT_NAME})
+install(DIRECTORY urdf worlds DESTINATION share/${PROJECT_NAME})
 
 ament_package()

@@ -1,9 +1,15 @@
 {
   "name": "ros2-jazzy",
-  "build": { "dockerfile": "Dockerfile" },
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "workspaceMount": "source=${localWorkspaceFolder},target=/ws,type=bind",
   "workspaceFolder": "/ws",
-  "runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
+  "runArgs": [
+    "--cap-add=SYS_PTRACE",
+    "--security-opt",
+    "seccomp=unconfined"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
@@ -15,7 +21,9 @@
         "ms-iot.vscode-ros"
       ],
       "settings": {
-        "clangd.arguments": ["--header-insertion=never"],
+        "clangd.arguments": [
+          "--header-insertion=never"
+        ],
         "C_Cpp.intelliSenseEngine": "disabled",
         "[cpp]": {
           "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
@@ -23,7 +31,9 @@
         },
         "files.associations": {
           "*.xacro": "xml",
-          "*.urdf": "xml"
+          "*.urdf": "xml",
+          "*.sdf": "xml",
+          "*.world": "xml"
         },
         "[xml]": {
           "editor.defaultFormatter": "redhat.vscode-xml",
