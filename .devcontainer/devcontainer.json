@@ -18,7 +18,8 @@
         "ms-vscode.cpptools",
         "vadimcn.vscode-lldb",
         "redhat.vscode-xml",
-        "ms-iot.vscode-ros"
+        "ms-iot.vscode-ros",
+        "charliermarsh.ruff"
       ],
       "settings": {
         "clangd.arguments": [
@@ -37,6 +38,10 @@
         },
         "[xml]": {
           "editor.defaultFormatter": "redhat.vscode-xml",
+          "editor.formatOnSave": true
+        },
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
           "editor.formatOnSave": true
         }
       }
