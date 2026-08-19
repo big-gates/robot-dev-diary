@@ -14,6 +14,7 @@ find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 add_compile_options(-Wall -Wextra -Wpedantic)
 
@@ -33,8 +34,13 @@ target_link_libraries(fake_robot_node robomath "${cpp_typesupport_target}")
 add_executable(teleop_node src/teleop_node.cpp)
 ament_target_dependencies(teleop_node rclcpp geometry_msgs)
 
-install(TARGETS fake_robot_node DESTINATION lib/${PROJECT_NAME})
-install(TARGETS teleop_node DESTINATION lib/${PROJECT_NAME})
+add_executable(odom_node src/odom_node.cpp)
+ament_target_dependencies(odom_node rclcpp sensor_msgs nav_msgs geometry_msgs tf2_geometry_msgs)
+target_link_libraries(odom_node robomath)
+
+
+install(TARGETS fake_robot_node teleop_node odom_node DESTINATION lib/${PROJECT_NAME})
+install(TARGETS robomath DESTINATION lib)
 install(DIRECTORY urdf worlds launch config DESTINATION share/${PROJECT_NAME})
 
 ament_package()
